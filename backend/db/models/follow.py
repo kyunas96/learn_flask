@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from utils.util import db
 
 class Follow(db.model):
-  id = db.column
+  id = db.column(db.Integer, primary_key=True)
