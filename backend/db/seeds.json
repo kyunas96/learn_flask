@@ -1,0 +1,9 @@
+{
+  "model": "models.User",
+  "data": [
+    {
+      "username": "Kevin",
+      "email": "kevinyunas@icloud.com"
+    }
+  ]
+}
