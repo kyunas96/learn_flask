@@ -1,1 +1,1 @@
-import images_controller
+import posts_contoller
