@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from ..controllers import images_controller
 
 images_route = Blueprint('images_route', __name__)
 

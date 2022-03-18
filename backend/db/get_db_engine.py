@@ -12,7 +12,7 @@ def get_db_engine():
   if not database_exists(engine.url):
     create_database(engine.url)
     print(f"Database created at: {POSTGRESQL_URI}")
-  else:
-    drop_database(engine.url)
+  # else:
+  #   drop_database(engine.url)
 
   return engine

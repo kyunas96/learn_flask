@@ -11,6 +11,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = POSTGRESQL_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 engine = get_db_engine()
+models.Base.metadata.drop_all(engine)
 models.Base.metadata.create_all(engine)
 # create a function that will seed the database after the tables for
 # the models are created in the database
