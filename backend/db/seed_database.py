@@ -1,27 +1,33 @@
 if __name__ == '__main__':
-  import os
-  import traceback
-  from dotenv import load_dotenv, find_dotenv
-  from sqlalchemy import create_engine
-  from sqlalchemy.orm import Session
-  from sqlalchemyseed import load_entities_from_json, Seeder
+    from get_db_engine import get_db_engine
+    from create_tables import create_tables
+    from sqlalchemy.orm import Session
+    from sqlalchemyseed import load_entities_from_json, Seeder
 
-  load_dotenv(find_dotenv())
-  POSTGRESQL_URI = os.environ.get('POSTGRESQL_URI')
-  print(POSTGRESQL_URI)
+    def seed_database():
+        seed_users(engine)
+        engine = get_db_engine()
+        # will create all tables that do not exist for the given models
+        create_tables(engine)
 
-  engine = create_engine(POSTGRESQL_URI)
+    def seed_users(engine):
+        # will create database at url if it does not exit
 
-  session = Session(engine)
-  seeder = Seeder(session)
-  entities = load_entities_from_json('./seeds.json')
+        session = Session(engine)
+        seeder = Seeder(session)
+        entities = load_entities_from_json('./seeds.json')
 
-  try:
-    seeder.seed(entities)
-    session.commit()
-    print('here')
-  except Exception as e:
-    # print(traceback.format_exc())
-    print(f"error: {e}")
+        try:
+            seeder.seed(entities)
+            session.commit()
+            print('here')
+        except Exception as e:
+            # print(traceback.format_exc())
+            print(f"error: {e}")
 
-  session.close()
+        session.close()
+
+    def seed_posts(engine):
+        substitute_names_for_ids()
+
+    def substitute_names_for_ids(file, username_dict):
