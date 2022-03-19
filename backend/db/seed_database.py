@@ -1,5 +1,6 @@
 if __name__ == '__main__':
   import os
+  import traceback
   from dotenv import load_dotenv, find_dotenv
   from sqlalchemy import create_engine
   from sqlalchemy.orm import Session
@@ -16,7 +17,11 @@ if __name__ == '__main__':
   entities = load_entities_from_json('./seeds.json')
 
   try:
-    seeds = seeder.seed(entities)
+    seeder.seed(entities)
     session.commit()
+    print('here')
   except Exception as e:
+    # print(traceback.format_exc())
     print(f"error: {e}")
+
+  session.close()

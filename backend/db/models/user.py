@@ -15,24 +15,25 @@ class User(Base):
     password = Column('password', String(), nullable=False)
     location = Column('location', String(128), nullable=True)
     bio = Column('bio', String(256), nullable=True)
-    created_at = Column('date_created', DateTime, nullable=False)
-    posts = relationship('Post', backref='user', cascade='all, delete-orphan')
-    following = relationship('User', secondary=Follow,
-                             primaryjoin=lambda: User.id == Follow.c.follower_id,
-                             secondaryjoin=lambda: User.id == Follow.c.followee_id,
+    date_created = Column('date_created', DateTime, nullable=False)
+    posts = relationship('Post', cascade='all, delete-orphan')
+    following = relationship('User', secondary=Follow.__table__,
+                             primaryjoin=lambda: User.id == Follow.follower_id,
+                             secondaryjoin=lambda: User.id == Follow.followee_id,
                              backref='followers'
                              )
-    likes = relationship('Likes', Like, backref='user',
+    likes = relationship('Like',
+                         primaryjoin=lambda: User.id == Like.user,
                          cascade='all, delete-orphan')
 
     @staticmethod
     def create_password(password):
         salt = bcrypt.gensalt()
-        return bcrypt.hashpw(password, salt)
+        return bcrypt.hashpw(b'password', salt)
 
     def verify_password(self, password):
         salt = bcrypt.gensalt()
-        return bcrypt.checkpw(password, salt)
+        return bcrypt.checkpw(b'password', salt)
 
     def __init__(self, username, email, password):
         if not username or not email:

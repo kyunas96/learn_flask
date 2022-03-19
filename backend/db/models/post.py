@@ -1,5 +1,6 @@
 from .base import Base
-from sqlalchemy import Column, Integer, String, DateTime, UniqueConstraint
+from sqlalchemy import (Column, Integer, String,
+                        DateTime, UniqueConstraint, ForeignKey)
 from sqlalchemy.orm import relationship
 import datetime
 
@@ -7,13 +8,12 @@ import datetime
 class Post(Base):
     __tablename__ = 'post'
     id = Column('id', Integer, primary_key=True)
-    user = relationship('User', )
+    user = Column('user', ForeignKey('user.id'), nullable=False)
     name = Column('name', String(64), nullable=False)
     image_url = Column('image_url', String(1024), nullable=False)
     description = Column('description', String(1024), nullable=True)
     created_at = Column('created_at', DateTime, nullable=False)
-    likes = relationship('Likes', backref='post',
-                         cascade='all, delete-orphan')
+    likes = relationship('Like', cascade='all, delete-orphan')
     __tableargs__ = (
         UniqueConstraint('name', 'user_id')
     )

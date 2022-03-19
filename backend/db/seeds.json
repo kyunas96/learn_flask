@@ -3,7 +3,8 @@
   "data": [
     {
       "username": "Kevin",
-      "email": "kevinyunas@icloud.com"
+      "email": "kevinyunas@icloud.com",
+      "password": "password"
     }
   ]
 }
