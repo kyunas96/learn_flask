@@ -1,8 +1,10 @@
+from venv import create
 from .base import Base
 from .like import Like
 from .follow import Follow
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
+from .utils.user import create_session_token
 import bcrypt
 import datetime
 
@@ -10,11 +12,20 @@ import datetime
 class User(Base):
     __tablename__ = 'user'
     id = Column('id', Integer, primary_key=True)
-    username = Column('username', String(32), nullable=False, unique=True)
-    avatar_s3_object_id = Column(
-        'avatar_s3_object_id', String(), nullable=True)
+    username = Column('username',
+                      String(32),
+                      nullable=False,
+                      unique=True,
+                      index=True)
+
+    avatar_s3_object_id = Column('avatar_s3_object_id', String(),nullable=True)
     email = Column('email', String(64), nullable=False, unique=True)
     password = Column('password', String(), nullable=False)
+    session_token = Column('session_token',
+                           String(),
+                           index=True,
+                           unique=True,
+                           nullable=False)
     location = Column('location', String(128), nullable=True)
     bio = Column('bio', String(256), nullable=True)
     date_created = Column('date_created', DateTime, nullable=False)
@@ -43,3 +54,4 @@ class User(Base):
         self.email = email
         self.password = User.create_password(password)
         self.date_created = datetime.datetime.utcnow()
+        self.session_token = create_session_token()
