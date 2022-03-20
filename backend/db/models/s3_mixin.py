@@ -20,17 +20,32 @@ S3_SECRET = os.getenv('S3_SECRET')
 class S3MixIn(object):
     _s3_url_ = S3_URL
     _s3_bucket_ = S3_BUCKET
+    s3_client = boto3.client('s3',
+                             aws_access_key_id=S3_KEY,
+                             aws_secret_access_key=S3_SECRET
+                             )
+
+    def _verfy_opload_success(filename):
+        with S3MixIn.s3_client as s3, S3MixIn._s3_bucket_ as bucket:
+            try:
+                res = s3.head_object(Bucket=bucket, Key=filename)
+                return res is not None
+            except boto3.exceptions.ClientError as e:
+                return e
+
+    def create_object(self, data, filename):
+        # controller will be responsible for getting data from the request
+        # and passing it in
+        with S3MixIn.s3_client as s3, S3MixIn._s3_bucket_ as bucket:
+            s3.upload_fileobj()
 
     def get_url(self):
-        s3 = boto3.client('s3',
-                          aws_access_key_id=S3_KEY,
-                          aws_secret_access_key=S3_SECRET
-                          )
-        try:
-          response = s3.generate_presigned_url('get_object', Params={
-            'Bucket': S3MixIn._s3_bucket_,
-            'Key': self._s3_url_
-          })
-          return response
-        except boto3.exceptions.ClientError as e:
-          return e
+        with S3MixIn.s3_client as s3:
+            try:
+                response = s3.generate_presigned_url('get_object', Params={
+                    'Bucket': S3MixIn._s3_bucket_,
+                    'Key': self._s3_url_
+                })
+                return response
+            except boto3.exceptions.ClientError as e:
+                return e

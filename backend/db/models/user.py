@@ -11,6 +11,8 @@ class User(Base):
     __tablename__ = 'user'
     id = Column('id', Integer, primary_key=True)
     username = Column('username', String(32), nullable=False, unique=True)
+    avatar_s3_object_id = Column(
+        'avatar_s3_object_id', String(), nullable=True)
     email = Column('email', String(64), nullable=False, unique=True)
     password = Column('password', String(), nullable=False)
     location = Column('location', String(128), nullable=True)
@@ -20,8 +22,7 @@ class User(Base):
     following = relationship('User', secondary=Follow.__table__,
                              primaryjoin=lambda: User.id == Follow.follower_id,
                              secondaryjoin=lambda: User.id == Follow.followee_id,
-                             backref='followers'
-                             )
+                             backref='followers')
     likes = relationship('Like',
                          primaryjoin=lambda: User.id == Like.user,
                          cascade='all, delete-orphan')
