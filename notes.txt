@@ -1,0 +1,17 @@
+Make sure models work and seed all data
+
+create Validators for models:
+- check to see if data adheres to SQL schema
+
+create controllers:
+- Users:
+  • 
+- Posts:
+  • creating a post:
+    - name_for_hash = filename + user.id
+    - hashed_name = hash(name_for_hash)
+    - check to see if the s3 bucket already contains the hashed_name
+    - upload the image to s3 under hashed_name and upon completion get the 
+    name of the file and attach it to the Post model to be created
+
+Create a check for a valid session token as middleware

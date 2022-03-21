@@ -1,4 +1,6 @@
 from venv import create
+
+from flask import session
 from .base import Base
 from .like import Like
 from .follow import Follow
@@ -42,25 +44,49 @@ class User(Base):
     @staticmethod
     def create_password(password):
         salt = bcrypt.gensalt()
-        return bcrypt.hashpw(b'password', salt)
+        password_as_bytes = bytes(password.encode())
+        hashed_pw_as_bytes = bcrypt.hashpw(password_as_bytes, salt)
+        return hashed_pw_as_bytes.decode('utf-8')
+
+    @staticmethod
+    def reset_session_token(user_id):
+        new_session_token = create_session_token()
+        session = Base.create_session()
+        session.query(User).filer(User.id == user_id).update({
+            User.session_token: new_session_token
+        })
+        session.commit()
+        session.close()
+
+    @staticmethod
+    def update_user(user_id, data):
+        session = Base.create_session()
+        session.query(User).filter(User.id == user_id).update(data)
+        session.commit()
+        session.close()
+
+    @staticmethod
+    def login_user(username, password):
+        session = Base.create_session()
+        user = session.query(User).filter(User.username == username).one()
+        print(f"IN USER: {user.id}")
+        if not user:
+            return None
+        return user if user.verify_password(password) else None
 
     def verify_password(self, password):
-        salt = bcrypt.gensalt()
-        return bcrypt.checkpw(b'password', salt)
+        password_as_bytes = bytes(password.encode())
+        hashed_as_bytes = bytes(self.password.encode())
+        if bcrypt.checkpw(password_as_bytes, hashed_as_bytes):
+            print("CORRECT")
+            return True
+        else:
+            print("INCORRECT")
+            return False
 
     def __init__(self, username, email, password):
-        if not username or not email:
-            raise Exception('Missing fields for User instance')
         self.username = username
         self.email = email
         self.password = User.create_password(password)
         self.date_created = datetime.datetime.utcnow()
         self.session_token = create_session_token()
-
-    def update_user(data):
-        user_id = data.user.id
-        user_data = {k: v for k, v in data.items() if v != 'id'}
-        session = Base._Session_()
-        session.query(User).filter(User.id == user_id).update(user_data)
-        session.commit()
-        session.close()

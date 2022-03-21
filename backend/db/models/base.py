@@ -1,11 +1,8 @@
-from gettext import find
-from json import load
 import os
-from click import echo
 from dotenv import load_dotenv, find_dotenv
 import sqlalchemy
 from sqlalchemy.orm import (declarative_base, scoped_session, sessionmaker)
-from sqlalchemy.ext.declarative import declared_attr
+# from sqlalchemy.ext.declarative import declared_attr
 
 load_dotenv(find_dotenv())
 
@@ -15,7 +12,11 @@ session = scoped_session(sessionmaker())
 session.configure(bind=engine)
 
 
-class SQLAlchemyBase(object):
+class _Base(object):
   _Session_ = session
 
-Base = declarative_base(cls=SQLAlchemyBase)
+  @staticmethod
+  def create_session():
+    return _Base._Session_()
+
+Base = declarative_base(cls=_Base)
