@@ -3,24 +3,38 @@ will serve as the base controller for all the other controllers
 to inherit from to get access to the current user
 """
 
-from flask import request
+from flask import request, session
+from ..db.models import User
 
 
 class BaseController:
   _current_user_ = None
   _session_token_ = None
 
-  def set_session_token(session_token):
-    BaseController._session_token_ = session_token
+  @classmethod
+  def get_session_token(cls):
+    with cls._session_token_ as session_token:
+      session_token = session_token or request.cookies['session_token']
+    return session_token
 
-  def set_current_user(current_user_id):
-    BaseController._current_user_ = current_user_id
+  @classmethod
+  def get_current_user(cls):
+    with cls._session_token_ as session_token:
+        if session_token is not None:
+          user = User.get_from_session_token(session_token)
+          if user is not None:
+            cls._current_user_ = user
+            return user
+          else:
+            return None
 
-  def get_session_token():
-    return BaseController._session_token_
-
-  def get_current_user():
-    return BaseController._current_user_
+  @classmethod
+  def set_current_user(cls, current_user):
+    cls._current_user_ = current_user
+  
+  @classmethod
+  def set_session_token(cls, session_token):
+    cls._session_token_ = session_token
         
 
   

@@ -5,6 +5,7 @@ from .base import Base
 from .like import Like
 from .follow import Follow
 from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import relationship
 from .utils.user import create_session_token
 import bcrypt
@@ -12,7 +13,7 @@ import datetime
 
 
 class User(Base):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
     id = Column('id', Integer, primary_key=True)
     username = Column('username',
                       String(32),
@@ -66,13 +67,23 @@ class User(Base):
         session.close()
 
     @staticmethod
-    def login_user(username, password):
+    def get_user(username):
         session = Base.create_session()
-        user = session.query(User).filter(User.username == username).one()
-        print(f"IN USER: {user.id}")
-        if not user:
+        try:
+            user = session.query(User).filter(User.username == username).one()
+            return user
+        except NoResultFound as e:
             return None
-        return user if user.verify_password(password) else None
+
+    @staticmethod
+    def get_from_session_token(session_token):
+        session = Base.create_session()
+        try:
+            user = session.query(User). \
+                filter(User.session_token == session_token).one()
+        except NoResultFound as e:
+            return None
+
 
     def verify_password(self, password):
         password_as_bytes = bytes(password.encode())

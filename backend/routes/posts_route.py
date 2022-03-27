@@ -1,12 +1,15 @@
 from flask import Blueprint, request, jsonify
-from ..controllers import posts_contoller
+from ..controllers import PostsController
 
 post_route = Blueprint('post_route', __name__)
 
-@post_route.get('/images')
+@post_route.get('/')
 def index():
-  data = request.args.get()
   return "All Images"
+
+@post_route.get('/<id>')
+def show(id):
+  return f"Retrieving image {id}"
 
 #   @images_route.route('/files')
 # def files():

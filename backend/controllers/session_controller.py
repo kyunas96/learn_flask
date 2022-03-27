@@ -1,17 +1,21 @@
 from . import BaseController
 from ..db.models import User
+from ..db.models.exceptions import UserModelError
 
 
 class SessionController(BaseController):
     @staticmethod
     def login(username, password):
-        user = User.login_user(username, password)
-        print(f"USER: {user}")
-        if not user: return False
+        user = User.get_user(username)
+        if not user: 
+            raise UserModelError("User does not exist")
 
-        BaseController.set_current_user(user.id)
+        if not user.verify_password(password): 
+            raise UserModelError("Incorrect password")
+
+        BaseController.set_current_user(user)
         BaseController.set_session_token(user.session_token)
-        return True
+        return user.id
     @staticmethod
     def logout():
         user_id = BaseController.get_current_user()
