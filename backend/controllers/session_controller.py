@@ -15,7 +15,7 @@ class SessionController(BaseController):
 
         BaseController.set_current_user(user)
         BaseController.set_session_token(user.session_token)
-        return user.id
+        return user
     @staticmethod
     def logout():
         user_id = BaseController.get_current_user()

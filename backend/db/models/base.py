@@ -21,16 +21,16 @@ class _Base(object):
   def create_session():
     return _Base._Session_()
 
-  def to_json(self):
-    def get_attr_handler(obj, key):
-      item = getattr(obj, key)
+  def to_json(self, skip_keys=[]):
+    json_dict = {}
+    for key in self.__table__.c.keys():
+      if key in skip_keys: continue
+      item = getattr(self, key)
       if isinstance(item, datetime.datetime):
-        return item.isoformat()
-      return item
-
-    keys = self.__table__.c.keys()
-    values = {c: get_attr_handler(self, c) for c in keys}
-    return json.dumps(values)
+        json_dict[key] = item.isoformat()
+      else:
+        json_dict[key] = item
+    return json.dumps(json_dict)
 
 
 Base = declarative_base(cls=_Base)

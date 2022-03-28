@@ -112,3 +112,6 @@ class User(Base):
         else:
             print("INCORRECT")
             return False
+
+    def to_json(self):
+        return Base.to_json(self, ["password", "date_created"])
