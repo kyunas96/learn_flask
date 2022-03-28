@@ -53,7 +53,7 @@ class User(Base):
     def reset_session_token(user_id):
         new_session_token = create_session_token()
         session = Base.create_session()
-        session.query(User).filer(User.id == user_id).update({
+        session.query(User).filter(User.id == user_id).update({
             User.session_token: new_session_token
         })
         session.commit()
