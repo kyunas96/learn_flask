@@ -19,10 +19,10 @@ class SessionController(BaseController):
         return user
     @staticmethod
     def logout():
-        user_id = BaseController.get_current_user()
-        if not user_id:
+        user = BaseController.get_current_user()
+        if not user:
             return False
-        User.reset_session_token(user_id)
+        User.reset_session_token(user.id)
         BaseController.set_session_token(None)
         BaseController.set_current_user(None)
         return True

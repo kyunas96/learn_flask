@@ -25,7 +25,9 @@ def login():
 @session_route.post('/logout')
 def logout():
     if SessionController.logout():
-        return "Successfully logged out"
+        res = make_response("Successfully logged out")
+        res.delete_cookie("session_token")
+        return res
     else:
         return "Not logged in"
     
