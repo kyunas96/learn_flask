@@ -1,6 +1,3 @@
-from venv import create
-
-from flask import session
 from .base import Base
 from .like import Like
 from .follow import Follow

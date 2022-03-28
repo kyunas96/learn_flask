@@ -4,7 +4,6 @@ import datetime
 from dotenv import load_dotenv, find_dotenv
 import sqlalchemy
 from sqlalchemy.orm import (declarative_base, scoped_session, sessionmaker)
-# from sqlalchemy.ext.declarative import declared_attr
 
 load_dotenv(find_dotenv())
 

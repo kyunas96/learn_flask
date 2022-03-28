@@ -1,4 +1,3 @@
-from telnetlib import GA, SE
 from models import User, Post
 from get_db_engine import get_db_engine
 from table_utils import create_tables, delete_tables

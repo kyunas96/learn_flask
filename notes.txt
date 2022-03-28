@@ -1,4 +1,10 @@
-Make sure models work and seed all data
+Make sure models work and seed all data ✅
+Create a check for a valid session token as middleware ✅
+Create managers for the each model that will be responsible for
+  dealing with the database sessions and creating instances of the
+  corresponding models
+
+
 
 create Validators for models:
 - check to see if data adheres to SQL schema
@@ -13,5 +19,3 @@ create controllers:
     - check to see if the s3 bucket already contains the hashed_name
     - upload the image to s3 under hashed_name and upon completion get the 
     name of the file and attach it to the Post model to be created
-
-Create a check for a valid session token as middleware
