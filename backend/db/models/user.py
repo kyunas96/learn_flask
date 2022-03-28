@@ -67,6 +67,16 @@ class User(Base):
         session.close()
 
     @staticmethod
+    def get_user_from_id(user_id):
+        session = Base.create_session()
+        try:
+            user = session.query(User).filter(User.id == user_id).one()
+            print(user)
+            return user
+        except NoResultFound as e:
+            return None
+
+    @staticmethod
     def get_user(username):
         session = Base.create_session()
         try:
@@ -79,10 +89,18 @@ class User(Base):
     def get_from_session_token(session_token):
         session = Base.create_session()
         try:
-            user = session.query(User). \
-                filter(User.session_token == session_token).one()
+            user = session.query(User).filter(User.session_token == session_token).one()
+            print(f"user: {user}")
+            return user
         except NoResultFound as e:
             return None
+
+    def __init__(self, username, email, password):
+        self.username = username
+        self.email = email
+        self.password = User.create_password(password)
+        self.date_created = datetime.datetime.utcnow()
+        self.session_token = create_session_token()
 
 
     def verify_password(self, password):
@@ -94,10 +112,3 @@ class User(Base):
         else:
             print("INCORRECT")
             return False
-
-    def __init__(self, username, email, password):
-        self.username = username
-        self.email = email
-        self.password = User.create_password(password)
-        self.date_created = datetime.datetime.utcnow()
-        self.session_token = create_session_token()

@@ -1,4 +1,6 @@
 import os
+import json
+import datetime
 from dotenv import load_dotenv, find_dotenv
 import sqlalchemy
 from sqlalchemy.orm import (declarative_base, scoped_session, sessionmaker)
@@ -18,5 +20,17 @@ class _Base(object):
   @staticmethod
   def create_session():
     return _Base._Session_()
+
+  def to_json(self):
+    def get_attr_handler(obj, key):
+      item = getattr(obj, key)
+      if isinstance(item, datetime.datetime):
+        return item.isoformat()
+      return item
+
+    keys = self.__table__.c.keys()
+    values = {c: get_attr_handler(self, c) for c in keys}
+    return json.dumps(values)
+
 
 Base = declarative_base(cls=_Base)

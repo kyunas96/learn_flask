@@ -17,5 +17,7 @@ class UsersController(BaseController):
     def update(data):
       pass
 
-    def get_valid_data(raw_data):
-      raw_data
+    def show(user_id):
+      user = User.get_user_from_id(user_id)
+      return user
+

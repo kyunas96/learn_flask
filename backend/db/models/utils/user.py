@@ -1,3 +1,3 @@
-import os, binascii
+import base64, M2Crypto
 def create_session_token():
-  return binascii.b2a_hex(os.urandom(12))
+  return base64.b64encode(M2Crypto.m2.rand_bytes(32)).decode()
