@@ -4,17 +4,11 @@ from .base_controller import BaseController
 
 class UsersController(BaseController):
     # will correspond to the users followed by the current user
-    def following():
-      pass
-
-    def followers():
-      pass
-      
-    def create(data):
-      for username, email, password in data:
+    def create(userdata):
+      for username, email, password in userdata:
         pass
 
-    def update(data):
+    def update(userdata):
       pass
 
     def show(user_id):
