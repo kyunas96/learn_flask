@@ -60,6 +60,14 @@ class User(Base):
         session.close()
 
     @staticmethod
+    def create_user(userdata):
+        session = Base.create_session()
+        user = User(userdata)
+        session.add(user)
+        session.commit()
+        session.close()
+
+    @staticmethod
     def update_user(user_id, data):
         session = Base.create_session()
         session.query(User).filter(User.id == user_id).update(data)
