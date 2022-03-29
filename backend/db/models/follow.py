@@ -20,12 +20,6 @@ class Follow(Base):
         self.followee_id = followee_id
         self.created_at = datetime.datetime.utcnow()
 
-    
-    
-
-    def create_follow():
-        pass
-
-    def delete_follow():
-        pass
+    def to_json(self):
+        return Base.to_json(self)
 

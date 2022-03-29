@@ -5,6 +5,7 @@ users_route = Blueprint('users_route', __name__)
 
 @users_route.get('/<id>')
 def show(id):
+  print(f"ID: {id}")
   user = UsersController.show(id)
   return user.to_json()
 

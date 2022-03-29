@@ -6,6 +6,10 @@ Create managers for the each model that will be responsible for
 
 
 
+All models should inherit create, update, delete from the Base model
+
+
+
 create Validators for models:
 - check to see if data adheres to SQL schema
 

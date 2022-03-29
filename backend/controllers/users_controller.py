@@ -5,13 +5,16 @@ from .base_controller import BaseController
 class UsersController(BaseController):
     # will correspond to the users followed by the current user
     def create(userdata):
-      for username, email, password in userdata:
-        pass
+      return User(userdata).create()
 
-    def update(userdata):
-      pass
-
-    def show(user_id):
-      user = User.get_user_from_id(user_id)
+    def update(user_id, user_data):
+      user = User.get_from_id(user_id).update(user_data)
       return user
 
+    def show(user_id):
+      user = User.get_from_id(user_id)
+      print(f"USER: {user}")
+      return user
+
+    def get():
+      pass
