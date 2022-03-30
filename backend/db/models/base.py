@@ -36,12 +36,13 @@ class _Base(object):
       try:
         session.add(self)
         session.commit()
+        session.flush()
       except Exception as e:
         return e
       finally:
         session.close()
 
-    return self
+    return self.to_json()
 
   def update(self, update_data):
     with _Base.create_session() as session:

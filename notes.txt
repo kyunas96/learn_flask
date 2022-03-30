@@ -23,3 +23,6 @@ create controllers:
     - check to see if the s3 bucket already contains the hashed_name
     - upload the image to s3 under hashed_name and upon completion get the 
     name of the file and attach it to the Post model to be created
+
+
+Create a tests folder and populate with tests
