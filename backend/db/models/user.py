@@ -66,10 +66,10 @@ class User(Base):
         except NoResultFound as e:
             return None
 
-    def __init__(self, username, email, password):
-        self.username = username
-        self.email = email
-        self.password = User.create_password(password)
+    def __init__(self, user_dict):
+        self.username = user_dict['username']
+        self.email = user_dict['email']
+        self.password = User.create_password(user_dict['password'])
         self.date_created = datetime.datetime.utcnow()
         self.session_token = create_session_token()
 

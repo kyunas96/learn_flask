@@ -21,10 +21,12 @@ class BaseController:
     def get_current_user(cls):
         if cls._current_user_ is not None:
             return cls._current_user_
-        else:
+        elif cls._session_token_ is not None:
             session_token = cls.get_session_token()
             user = User.get_from_session_token(session_token)
             return user
+        else:
+            return None
 
     @classmethod
     def set_current_user(cls, current_user):

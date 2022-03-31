@@ -9,12 +9,16 @@ if __name__ == '__main__':
     create_tables(engine)
     session = Session(engine)
 
-    Kevin = User("Kevin", "kevinyunas@icloud.com", "password")
-    Daniel = User("Daniel", "daniel@email.com", "danielPassword")
-    Gabby = User("Gabby", "gabby@email.com", "gabbyPassword")
+    Kevin = User({'username': "Kevin", 'email': "kevinyunas@icloud.com",
+                  'password': "password"})
+    Daniel = User({'username': "Daniel",
+                  'email': "daniel@email.com", 'password': "danielPassword"})
+    Gabby = User({'username': "Gabby", 'email': "gabby@email.com",
+                 'password': "gabbyPassword"})
     users = [Kevin, Daniel, Gabby]
     session.add_all(users)
     session.commit()
+    session.flush()
 
     beachPost = Post(Kevin.id, "Summer Breeze", "beach.jpg")
     canyonPost = Post(Gabby.id, "Canyon", "canyon.jpg")
