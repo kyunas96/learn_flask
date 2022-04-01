@@ -1,3 +1,4 @@
+from functools import partial
 import json
 from flask import Blueprint, jsonify, request
 from ..controllers import UsersController
@@ -26,4 +27,8 @@ def post():
 
 @users_route.patch('/<userid>')
 def update(userid):
-  pass
+  errors = user_validator.validate(request.form, partial=("id"))
+  if errors:
+    return jsonify(errors)
+  user_dict = request.form.to_dict()
+  updated_user = UsersController.update(user_dict)

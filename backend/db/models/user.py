@@ -42,7 +42,7 @@ class User(Base):
     @classmethod
     def get_from_id(cls, id):
         return super(cls, cls).get_from_id(id)
-
+        
     @staticmethod
     def create_password(password):
         salt = bcrypt.gensalt()

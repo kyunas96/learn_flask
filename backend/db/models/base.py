@@ -4,6 +4,7 @@ import datetime
 from dotenv import load_dotenv, find_dotenv
 import sqlalchemy
 from sqlalchemy.orm import (declarative_base, scoped_session, sessionmaker)
+from .exceptions.base_exceptions import InvalidFilterParameters
 
 load_dotenv(find_dotenv())
 
@@ -51,27 +52,49 @@ class _Base():
             try:
                 for k, v in update_data.items():
                     if k == "id":
-                        raise Exception("id property is not changeable")
+                        continue
                     if not hasattr(self, k):
                         raise Exception(
                             f"{k} does not exist on {self.__class__}")
                     setattr(self, k, v)
+                session.add(self)
                 session.commit()
                 session.flush()
+                self.to_json()
             except:
                 return None
             finally:
                 session.close()
 
-        return self
+    @classmethod
+    def get_by(cls, attrs_dict):
+        invalids = []
+        for attr in attrs_dict.keys():
+            if not hasattr(cls, attr):
+                invalids.append(attr)
+        if len(invalids) > 0:
+            raise InvalidFilterParameters(invalids)
+        with _Base.create_session() as session:
+            try:
+                entity = session.query(cls).filter_by(attrs_dict).all()
+                return entity
+            except Exception as e:
+                return e
+            finally:
+                session.close()
 
-    # def get(self, attributes):
-    #   for attr in attributes:
-    #     if not hasattr(self, attr):
-    #       raise Exception(f"{attr} does not exist on {self.__class__}")
-
-    #   # with _Base.create_session as session:
-    #   #   try:
+    @classmethod
+    def get_one_by(cls, attrs_dict):
+        invalids = []
+        for attr in attrs_dict.keys():
+            if not hasattr(cls, attr):
+                invalids.append(attr)
+        if len(invalids) > 0:
+            raise InvalidFilterParameters(invalids)
+        with _Base.create_session() as session:
+            entity = session.query(cls).filter_by(**attrs_dict).scalar()
+            session.close()
+            return entity
 
     @classmethod
     def get_from_id(cls, id):

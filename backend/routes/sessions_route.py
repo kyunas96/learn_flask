@@ -1,8 +1,6 @@
 import json
 from flask import Blueprint, make_response, request, jsonify
 from ..controllers import SessionController
-import backend.db.models.exceptions as ModelExceptions
-# import UserModelError
 
 session_route = Blueprint('session_route', __name__)
 
@@ -15,11 +13,11 @@ def login():
         user = SessionController.login(username, password)
         print(f"user: {user}")
         # response should redirect to main page having set session_token
-        res = make_response(user.to_json())
+        res = make_response(user)
         res.set_cookie("session_token", user.session_token)
         return res
-    except ModelExceptions.UserModelError as e:
-        return jsonify(e.message)
+    except Exception as e:
+        return jsonify(str(e))
 
 
 @session_route.post('/logout')
