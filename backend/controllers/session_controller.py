@@ -12,7 +12,7 @@ class SessionController(BaseController):
 
         BaseController.set_current_user(user)
         BaseController.set_session_token(user.session_token)
-        return user.to_json()
+        return user
 
 
     @staticmethod
@@ -20,7 +20,7 @@ class SessionController(BaseController):
         user = BaseController.get_current_user()
         if not user:
             return False
-        User.reset_session_token(user.id)
+        user.reset_session_token()
         BaseController.set_session_token(None)
         BaseController.set_current_user(None)
         return True

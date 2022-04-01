@@ -50,11 +50,9 @@ class User(Base):
         hashed_pw_as_bytes = bcrypt.hashpw(password_as_bytes, salt)
         return hashed_pw_as_bytes.decode('utf-8')
 
-    @staticmethod
-    def reset_session_token(user_id):
-        user = User.get_from_id(user_id)
+    def reset_session_token(self):
         new_session_token = create_session_token()
-        user.update({"session_token" : new_session_token})
+        ret = self.update({"session_token" : new_session_token})
 
     @staticmethod
     def get_from_session_token(session_token):

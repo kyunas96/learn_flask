@@ -22,7 +22,7 @@ def post():
     return jsonify(errors)
   user_dict = request.form.to_dict()
   user = UsersController.create(user_dict)
-  return user
+  return user.to_json()
 
 
 @users_route.patch('/<userid>')
@@ -32,3 +32,4 @@ def update(userid):
     return jsonify(errors)
   user_dict = request.form.to_dict()
   updated_user = UsersController.update(user_dict)
+  return updated_user.to_json()

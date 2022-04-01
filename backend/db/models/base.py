@@ -40,7 +40,7 @@ class _Base():
                 session.add(self)
                 session.commit()
                 session.flush()
-                return self.to_json()
+                return self
             except Exception as e:
                 print("Error at BASE")
                 return str(f"BASE_MODEL ERROR: {str(e)}")
@@ -60,8 +60,9 @@ class _Base():
                 session.add(self)
                 session.commit()
                 session.flush()
-                self.to_json()
-            except:
+                return self
+            except Exception as e:
+                print("EXCEPTION: " + str(e))
                 return None
             finally:
                 session.close()

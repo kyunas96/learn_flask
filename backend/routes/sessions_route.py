@@ -13,7 +13,7 @@ def login():
         user = SessionController.login(username, password)
         print(f"user: {user}")
         # response should redirect to main page having set session_token
-        res = make_response(user)
+        res = make_response(user.to_json())
         res.set_cookie("session_token", user.session_token)
         return res
     except Exception as e:
