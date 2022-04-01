@@ -22,6 +22,8 @@ def post():
     return jsonify(errors)
   user_dict = request.form.to_dict()
   user = UsersController.create(user_dict)
+  print("USER")
+  print(user)
   return user.to_json()
 
 

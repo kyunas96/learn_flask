@@ -10,7 +10,7 @@ load_dotenv(find_dotenv())
 
 POSTGRESQL_URI = os.getenv('POSTGRESQL_URI')
 engine = sqlalchemy.create_engine(POSTGRESQL_URI, echo=True)
-session = scoped_session(sessionmaker())
+session = scoped_session(sessionmaker(expire_on_commit=False))
 session.configure(bind=engine)
 
 
@@ -22,6 +22,8 @@ class _Base():
         return _Base._Session_()
 
     def to_json(self, skip_keys=[]):
+        print("JSON")
+        print()
         json_dict = {}
         for key in self.__table__.c.keys():
             if key in skip_keys:
@@ -42,8 +44,7 @@ class _Base():
                 session.flush()
                 return self
             except Exception as e:
-                print("Error at BASE")
-                return str(f"BASE_MODEL ERROR: {str(e)}")
+                return None
             finally:
                 session.close()
 
