@@ -21,10 +21,13 @@ def post():
   if errors:
     return jsonify(errors)
   user_dict = request.form.to_dict()
-  user = UsersController.create(user_dict)
-  print("USER")
-  print(user)
-  return user.to_json()
+  try:
+    user = UsersController.create(user_dict)
+    return user.to_json()
+  except Exception as e:
+    return jsonify(e)
+
+  
 
 
 @users_route.patch('/<userid>')
