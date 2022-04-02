@@ -10,7 +10,7 @@ load_dotenv(find_dotenv())
 
 POSTGRESQL_URI = os.getenv('POSTGRESQL_URI')
 engine = sqlalchemy.create_engine(POSTGRESQL_URI, echo=True)
-session = scoped_session(sessionmaker(expire_on_commit=False))
+session = scoped_session(sessionmaker())
 session.configure(bind=engine)
 
 
@@ -42,6 +42,7 @@ class _Base():
                 session.add(self)
                 session.commit()
                 session.flush()
+                session.refresh(self)
                 return self
             except Exception as e:
                 return None
@@ -61,12 +62,25 @@ class _Base():
                 session.add(self)
                 session.commit()
                 session.flush()
+                session.refresh(self)
                 return self
-            except Exception as e:
-                print("EXCEPTION: " + str(e))
+            except:
                 return None
             finally:
                 session.close()
+
+    def delete(self):
+        with _Base.create_session() as session:
+            try:
+                session.delete(self)
+                session.commit()
+                session.flush()
+                return True
+            except Exception as e:
+                return False
+            finally:
+                session.close()
+            
 
     @classmethod
     def get_by(cls, attrs_dict):
@@ -78,7 +92,7 @@ class _Base():
             raise InvalidFilterParameters(invalids)
         with _Base.create_session() as session:
             try:
-                entity = session.query(cls).filter_by(attrs_dict).all()
+                entity = session.query(cls).filter_by(**attrs_dict).all()
                 return entity
             except Exception as e:
                 return e
@@ -101,15 +115,19 @@ class _Base():
     @classmethod
     def get_from_id(cls, id):
         with _Base.create_session() as session:
-            print(f"CLS: {cls.__class__}")
-            try:
-                entry = session.query(cls).filter(cls.id == id).one()
-                print(f"entry: {entry}")
-                session.close()
-                return entry
-            except Exception as e:
-                session.close()
-                return e
+            entry = session.query(cls).filter(cls.id == id).scalar()
+            session.close()
+            return entry
+
+
+    # find a way to pass in query objects into the function
+    # to make for dynamic filtering
+    @classmethod
+    def query(cls, query):
+        with _Base.create_session() as session:
+            return query.with_session(session).all()
+            
+        
 
 
 Base = declarative_base(cls=_Base)

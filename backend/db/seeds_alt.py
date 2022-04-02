@@ -1,4 +1,4 @@
-from models import User, Post
+from models import User, Post, Follow
 from get_db_engine import get_db_engine
 from table_utils import create_tables, delete_tables
 from sqlalchemy.orm import Session
@@ -47,6 +47,19 @@ if __name__ == '__main__':
              liesPost, stairsPost, daniel10Post, mardigrasPost,
              soakPost, hangloosePost, sunsetPost, daniel5Post]
     session.add_all(posts)
+
+    kevin_gabby_follow = Follow(Kevin.id, Gabby.id)
+    kevin_daniel_follow = Follow(Kevin.id, Daniel.id)
+    gabby_kevin_follow = Follow(Gabby.id, Kevin.id)
+    gabby_daniel_follow = Follow(Gabby.id, Daniel.id)
+    daniel_kevin_follow = Follow(Daniel.id, Kevin.id)
+    daniel_gabby_follow = Follow(Daniel.id, Gabby.id)
+
+    follows = [kevin_daniel_follow, kevin_gabby_follow,
+               gabby_daniel_follow, gabby_kevin_follow,
+               daniel_gabby_follow, daniel_kevin_follow]
+    session.add_all(follows)
+
     session.commit()
 
     session.close()

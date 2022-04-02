@@ -1,28 +1,35 @@
-from lib2to3.pytree import Base
-from ..db.models import Follow
 from .base_controller import BaseController
+from ..db.models import Follow
+from .validators import FollowSchema
+
+follow_validator = FollowSchema()
 
 
 class FollowsController(BaseController):
     # move create and delete to a manager class for follows
-    def create(followed_user_id):
-      with BaseController._current_user_.id as user_id:
-        try:
-          follow = Follow(user_id, followed_user_id).create()
-          return follow
-        except Exception as e:
-          return str(e)
+    def create(follow_dict):
+        follow_dict['follower_id'] = BaseController._current_user_.id
+        errors = follow_validator.validate(follow_dict)
+        if errors:
+            raise Exception(errors)
+        if Follow.get_one_by(follow_dict) is not None:
+            raise Exception("Follow already exists")
+        return Follow(follow_dict).create()
 
-    # def delete(followed_user_id):
-    #   with BaseController._current_user_.id as user_id:
-    #     try:
-          
+    def delete(follow_dict):
+        follow_dict['follower_id'] = BaseController._current_user_.id
+        errors = follow_validator.validate(follow_dict)
+        if errors:
+            raise Exception(errors)
+        follow = Follow.get_one_by(follow_dict)
+        if follow is None:
+            raise Exception("Follow does not exist")
+        return follow.delete()
 
-    # def get_followers():
-    #   with BaseController._current_user_.id as user_id:
-    #     followers = Follow
-    #     pass
+    def get_followers():
+        user_id = BaseController._current_user_.id
+        return Follow.get_by({'followee_id': user_id})
 
     def get_followings():
-      with BaseController._current_user_.id as user_id:
-        pass
+        user_id = BaseController._current_user_.id
+        return Follow.get_by({'follower_id': user_id})

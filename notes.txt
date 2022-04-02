@@ -1,14 +1,11 @@
 Make sure models work and seed all data ✅
 Create a check for a valid session token as middleware ✅
-Create managers for the each model that will be responsible for
-  dealing with the database sessions and creating instances of the
-  corresponding models
 
+All models should inherit create, update, delete from the Base model ✅
 
-
-All models should inherit create, update, delete from the Base model
-
-
+Create validation check for uniqueness:
+- make sure new users can't take an already existing username
+- users cannot create multiple posts with the same name
 
 create Validators for models:
 - check to see if data adheres to SQL schema
@@ -26,3 +23,6 @@ create controllers:
 
 
 Create a tests folder and populate with tests
+
+4/2:
+- Validators
