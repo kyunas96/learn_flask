@@ -3,7 +3,8 @@ import json
 import datetime
 from dotenv import load_dotenv, find_dotenv
 import sqlalchemy
-from sqlalchemy.orm import (declarative_base, scoped_session, sessionmaker)
+from sqlalchemy.orm import (
+    declarative_base, scoped_session, sessionmaker, Query)
 from .exceptions.base_exceptions import InvalidFilterParameters
 
 load_dotenv(find_dotenv())
@@ -80,7 +81,6 @@ class _Base():
                 return False
             finally:
                 session.close()
-            
 
     @classmethod
     def get_by(cls, attrs_dict):
@@ -119,15 +119,11 @@ class _Base():
             session.close()
             return entry
 
-
-    # find a way to pass in query objects into the function
-    # to make for dynamic filtering
     @classmethod
-    def query(cls, query):
+    def query(cls, *attributes):
+        queryAttrs = attributes or cls
         with _Base.create_session() as session:
-            return query.with_session(session).all()
-            
-        
+            return Query(queryAttrs, session=session)
 
 
 Base = declarative_base(cls=_Base)

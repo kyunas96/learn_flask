@@ -9,7 +9,8 @@ def show(id):
     user = UsersController.show(id)
     if not user:
         return jsonify({'error': "User not found"}), 400
-    return user.to_json(), 200
+    return "user"
+    # return user.to_json(), 200
 
 
 @users_route.post('/')

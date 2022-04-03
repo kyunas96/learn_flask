@@ -25,6 +25,6 @@ class UsersController(BaseController):
             return user
 
     def show(user_id):
-        user = User.get_from_id(user_id)
+        user = User.query().filter_by(id=user_id).scalar()
         print(f"USER: {user}")
-        return user
+        return "user"

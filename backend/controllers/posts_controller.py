@@ -40,5 +40,5 @@ class PostsController(BaseController):
             limit(limit). \
             offset(offset)
 
-        posts = Post.query(query)
+        posts = Post.query()
         return [post.to_json() for post in posts]
