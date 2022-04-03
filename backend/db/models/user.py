@@ -39,6 +39,10 @@ class User(Base):
                          primaryjoin=lambda: User.id == Like.user,
                          cascade='all, delete-orphan')
 
+    @classmethod
+    def get_from_id(cls, id):
+        return super(cls, cls).get_from_id(id)
+        
     @staticmethod
     def create_password(password):
         salt = bcrypt.gensalt()
@@ -46,49 +50,9 @@ class User(Base):
         hashed_pw_as_bytes = bcrypt.hashpw(password_as_bytes, salt)
         return hashed_pw_as_bytes.decode('utf-8')
 
-    @staticmethod
-    def reset_session_token(user_id):
+    def reset_session_token(self):
         new_session_token = create_session_token()
-        session = Base.create_session()
-        session.query(User).filter(User.id == user_id).update({
-            User.session_token: new_session_token
-        })
-        session.commit()
-        session.close()
-
-    @staticmethod
-    def create_user(userdata):
-        session = Base.create_session()
-        user = User(userdata)
-        session.add(user)
-        session.commit()
-        session.close()
-
-    @staticmethod
-    def update_user(user_id, data):
-        session = Base.create_session()
-        session.query(User).filter(User.id == user_id).update(data)
-        session.commit()
-        session.close()
-
-    @staticmethod
-    def get_user_from_id(user_id):
-        session = Base.create_session()
-        try:
-            user = session.query(User).filter(User.id == user_id).one()
-            print(user)
-            return user
-        except NoResultFound as e:
-            return None
-
-    @staticmethod
-    def get_user(username):
-        session = Base.create_session()
-        try:
-            user = session.query(User).filter(User.username == username).one()
-            return user
-        except NoResultFound as e:
-            return None
+        ret = self.update({"session_token" : new_session_token})
 
     @staticmethod
     def get_from_session_token(session_token):
@@ -100,10 +64,10 @@ class User(Base):
         except NoResultFound as e:
             return None
 
-    def __init__(self, username, email, password):
-        self.username = username
-        self.email = email
-        self.password = User.create_password(password)
+    def __init__(self, user_dict):
+        self.username = user_dict['username']
+        self.email = user_dict['email']
+        self.password = User.create_password(user_dict['password'])
         self.date_created = datetime.datetime.utcnow()
         self.session_token = create_session_token()
 
@@ -119,4 +83,5 @@ class User(Base):
             return False
 
     def to_json(self):
+        # print(f"self: {self}")
         return Base.to_json(self, ["password", "date_created"])

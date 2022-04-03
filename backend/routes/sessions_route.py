@@ -1,25 +1,21 @@
-import json
 from flask import Blueprint, make_response, request, jsonify
 from ..controllers import SessionController
-import backend.db.models.exceptions as ModelExceptions
-# import UserModelError
 
 session_route = Blueprint('session_route', __name__)
 
 
 @session_route.post('/login')
 def login():
-    username = request.form['username']
-    password = request.form['password']
     try:
-        user = SessionController.login(username, password)
+        session_dict = request.form.to_dict()
+        user = SessionController.login(session_dict)
         print(f"user: {user}")
         # response should redirect to main page having set session_token
         res = make_response(user.to_json())
         res.set_cookie("session_token", user.session_token)
         return res
-    except ModelExceptions.UserModelError as e:
-        return jsonify(e.message)
+    except Exception as e:
+        return jsonify(str(e))
 
 
 @session_route.post('/logout')

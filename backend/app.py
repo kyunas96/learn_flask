@@ -4,7 +4,7 @@ from .config import POSTGRESQL_URI
 import backend.db.models as models
 from backend.db import get_db_engine
 from sqlalchemy import *
-from .routes import session_route, posts_route, users_route
+from .routes import session_route, posts_route, users_route, follows_route
 from .controllers import BaseController
 
 load_dotenv()
@@ -18,6 +18,7 @@ engine = get_db_engine()
 app.register_blueprint(session_route, url_prefix='/session')
 app.register_blueprint(posts_route, url_prefix='/posts')
 app.register_blueprint(users_route, url_prefix='/users')
+app.register_blueprint(follows_route, url_prefix='/follows')
 
 
 # get the current user before further processing
