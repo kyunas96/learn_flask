@@ -6,10 +6,10 @@ from ..controllers import PostsController
 posts_route = Blueprint('posts_route', __name__)
 
 
-@posts_route.get('/<pagenum>')
+@posts_route.get('/<int:pagenum>')
 def index(pagenum):
     limit = 25
-    offset = (int(pagenum) - 1) * limit
+    offset = (pagenum - 1) * limit
     posts = PostsController.index(offset, limit)
     
     return jsonify(posts), 200

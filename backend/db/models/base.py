@@ -23,8 +23,6 @@ class _Base():
         return _Base._Session_()
 
     def to_json(self, skip_keys=[]):
-        print("JSON")
-        print()
         json_dict = {}
         for key in self.__table__.c.keys():
             if key in skip_keys:
