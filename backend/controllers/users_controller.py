@@ -1,4 +1,4 @@
-from ..db.models import User
+from ..db.models import User, Post
 from .base_controller import BaseController
 from .validators import UserSchema
 
@@ -26,5 +26,15 @@ class UsersController(BaseController):
 
     def show(user_id):
         user = User.query().filter_by(id=user_id).scalar()
-        print(f"USER: {user}")
-        return "user"
+        return user
+
+    def users_posts(userid, pagenumber):
+        LIMIT = 25
+        offset = (pagenumber - 1) * LIMIT
+        posts = Post.query().filter_by(user_id = userid). \
+            offset(offset). \
+            limit(LIMIT). \
+            all()
+        return posts
+
+

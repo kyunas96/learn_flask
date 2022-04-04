@@ -1,16 +1,17 @@
 from flask import Blueprint, jsonify, request
 from ..controllers import UsersController
+from . import user_show_route
 
 users_route = Blueprint('users_route', __name__)
 
 
-@users_route.get('/<id>')
-def show(id):
-    user = UsersController.show(id)
-    if not user:
-        return jsonify({'error': "User not found"}), 400
-    return "user"
-    # return user.to_json(), 200
+# @users_route.get('/<id>')
+# def show(id):
+#     user = UsersController.show(id)
+#     if not user:
+#         return jsonify({'error': "User not found"}), 400
+#     return "user"
+#     # return user.to_json(), 200
 
 
 @users_route.post('/')
