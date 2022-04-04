@@ -14,7 +14,9 @@ users_route = Blueprint('users_route', __name__)
 #     # return user.to_json(), 200
 
 
+
 @users_route.post('/')
+@users_route.post('')
 def post():
     try:
         user_dict = request.form.to_dict()

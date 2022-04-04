@@ -31,7 +31,7 @@ class UsersController(BaseController):
     def users_posts(userid, pagenumber):
         LIMIT = 25
         offset = (pagenumber - 1) * LIMIT
-        posts = Post.query().filter_by(user_id = userid). \
+        posts = Post.query().filter(Post.user_id == userid). \
             offset(offset). \
             limit(LIMIT). \
             all()
