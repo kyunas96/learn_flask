@@ -26,3 +26,5 @@ Create a tests folder and populate with tests
 
 4/2:
 - Validators
+
+Refactor SessionController to use new Base query

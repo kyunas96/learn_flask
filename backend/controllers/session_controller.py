@@ -14,7 +14,7 @@ class SessionController(BaseController):
             raise Exception(errors)
         username = session_dict.pop('username')
         password = session_dict.pop('password')
-        user = User.get_one_by({'username': username})
+        user = User.query().filter(User.username == username).scalar()
         if not user: raise Exception("User does not exist")
         if not user.verify_password(password): raise Exception("Incorrect password")
 

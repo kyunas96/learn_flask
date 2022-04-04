@@ -25,7 +25,7 @@ class UsersController(BaseController):
             return user
 
     def show(user_id):
-        user = User.query().filter_by(id=user_id).scalar()
+        user = User.query().filter(User.id == user_id).scalar()
         return user
 
     def users_posts(userid, pagenumber):
