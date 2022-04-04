@@ -14,13 +14,6 @@ class FeedController(BaseController):
         posts = Post.query().filter(Post.user_id.in_(subquery)). \
             order_by(Post.created_at.desc()). \
             offset(pagenumber). \
-            limit(FEED_LIMIT)
-        return posts
-
-    def get_users_feed(userid, pagenumber):
-        FEED_LIMIT = 25
-        posts = Post.query().filter(Post.user_id == userid). \
-            order_by(Post.created_at.desc()). \
-            offset(pagenumber). \
-            limit(FEED_LIMIT)
+            limit(FEED_LIMIT). \
+            all()
         return posts

@@ -17,6 +17,7 @@ engine = get_db_engine()
 # create a function that will seed the database after the tables for
 # the models are created in the database
 app.register_blueprint(session_route, url_prefix='/session')
+app.register_blueprint(feed_route, url_prefix='/feed')
 app.register_blueprint(posts_route, url_prefix='/posts')
 users_route.register_blueprint(user_show_route, url_prefix='<int:userid>')
 app.register_blueprint(users_route, url_prefix='/users')
