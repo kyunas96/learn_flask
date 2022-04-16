@@ -7,10 +7,12 @@ from sqlalchemy import *
 from .routes import (session_route, posts_route,
                      users_route, user_show_route, follows_route, feed_route)
 from .controllers import BaseController
+from flask_cors import CORS
 
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = POSTGRESQL_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 engine = get_db_engine()

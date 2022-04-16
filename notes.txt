@@ -1,14 +1,11 @@
 Make sure models work and seed all data ✅
 Create a check for a valid session token as middleware ✅
-
 All models should inherit create, update, delete from the Base model ✅
+Refactor SessionController to use new Base query ✅
 
-Create validation check for uniqueness:
-- make sure new users can't take an already existing username
-- users cannot create multiple posts with the same name
-
-create Validators for models:
-- check to see if data adheres to SQL schema
+Create validation check for uniqueness: ✅
+- make sure new users can't take an already existing username ✅
+- users cannot create multiple posts with the same name ✅
 
 create controllers:
 - Users:
@@ -24,7 +21,8 @@ create controllers:
 
 Create a tests folder and populate with tests
 
-4/2:
-- Validators
-
-Refactor SessionController to use new Base query
+Create frontend scaffold to test backend functionality:
+- Login
+- Signup
+- Create post
+  • check backend functionality for file uploads to s3
