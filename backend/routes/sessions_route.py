@@ -23,8 +23,8 @@ def login():
 @session_route.post('/logout')
 def logout():
     if SessionController.logout():
-        res = make_response("Successfully logged out")
+        res = make_response("Successfully logged out", 204)
         res.delete_cookie("session_token")
-        return True, 200
+        return res
     else:
-        return "Not logged in"
+        return Response("Not logged in", 404)
