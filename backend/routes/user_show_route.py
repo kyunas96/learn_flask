@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, jsonify
-from ..controllers import UsersController
+from controllers import UsersController
 
 user_show_route = Blueprint('user_show_route', __name__)
 

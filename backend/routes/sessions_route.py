@@ -1,5 +1,5 @@
 from flask import Blueprint, make_response, request, jsonify, Response
-from ..controllers import SessionController
+from controllers import SessionController
 from .responses import create_data_resp, create_exception_resp
 
 session_route = Blueprint('session_route', __name__)

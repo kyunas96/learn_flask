@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, request, jsonify
-from ..controllers import PostsController
+from controllers import PostsController
 
 
 posts_route = Blueprint('posts_route', __name__)

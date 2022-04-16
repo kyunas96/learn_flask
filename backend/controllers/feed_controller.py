@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Query
 from .base_controller import BaseController
-from ..db.models import Follow, Post
+from db.models import Follow, Post
 
 
 class FeedController(BaseController):

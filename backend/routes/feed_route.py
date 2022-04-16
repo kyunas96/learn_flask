@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from ..controllers import FeedController
+from controllers import FeedController
 
 feed_route = Blueprint('feed_route', __name__)
 

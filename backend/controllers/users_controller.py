@@ -1,4 +1,4 @@
-from ..db.models import User, Post
+from db.models import User, Post
 from .base_controller import BaseController
 from .validators import UserSchema
 

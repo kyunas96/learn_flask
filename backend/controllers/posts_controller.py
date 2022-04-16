@@ -1,5 +1,5 @@
 from .import BaseController
-from ..db.models import Post, Follow
+from db.models import Post, Follow
 from sqlalchemy.orm import Query
 from .validators import PostSchema
 

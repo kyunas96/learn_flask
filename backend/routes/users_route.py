@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from ..controllers import UsersController
+from controllers import UsersController
 from . import user_show_route
 
 users_route = Blueprint('users_route', __name__)

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from ..controllers import FollowsController
+from controllers import FollowsController
 
 follows_route = Blueprint('follows_route', __name__)
 

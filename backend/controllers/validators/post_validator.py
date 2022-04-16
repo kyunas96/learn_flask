@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields, ValidationError, validates_schema
 from marshmallow.validate import Length
-from ...db.models import Post
+from db.models import Post
 
 
 class PostSchema(Schema):

@@ -4,7 +4,7 @@ to inherit from to get access to the current user
 """
 
 from flask import request, session
-from ..db.models import User
+from db.models import User
 
 
 class BaseController:

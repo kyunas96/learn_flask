@@ -1,5 +1,5 @@
 from .base_controller import BaseController
-from ..db.models import Like, Post
+from db.models import Like, Post
 from .validators import LikeSchema
 from sqlalchemy.orm import Query
 

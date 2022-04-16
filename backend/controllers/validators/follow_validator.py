@@ -1,6 +1,6 @@
 from importlib.metadata import requires
 from marshmallow import Schema, ValidationError, fields, validates_schema
-from ...db.models import Follow
+from db.models import Follow
 
 class FollowSchema(Schema):
   """

@@ -1,5 +1,5 @@
 from .base_controller import BaseController
-from ..db.models import Follow
+from db.models import Follow
 from .validators import FollowSchema
 
 follow_validator = FollowSchema()

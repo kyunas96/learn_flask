@@ -1,8 +1,8 @@
 from flask import jsonify
 from . import BaseController
-from ..db.models import User
-from ..db.models.exceptions.user_exceptions import UserModelError
-from .validators import SessionSchema
+from db.models import User
+from db.models.exceptions.user_exceptions import UserModelError
+from controllers.validators import SessionSchema
 import json
 
 session_validator = SessionSchema()
