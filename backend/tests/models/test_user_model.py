@@ -13,7 +13,7 @@ def test_user_creation():
     "session_token": fake.md5(),
     "location": fake.city(),
     "bio": fake.paragraph(nb_sentences=5),
-    "avatar_s3_object_id": fake.domain_name(),
+    "avatar_s3_object_id": fake.domain_name(),``
     "date_created": fake.date_this_decade()
   }
   user = User(user_dict)
