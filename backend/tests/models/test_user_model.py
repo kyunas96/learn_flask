@@ -21,5 +21,9 @@ def test_user_creation():
   assert user is not None
 
 
-def test_invalid_user_validation():
-  pass
+def test_invalid_user_exception():
+  user_dict = {}
+  with pytest.raises(Exception) as e_info:
+    user = User(user_dict)
+    print(f"\nEXCEPTION: {user}")
+
