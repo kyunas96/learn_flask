@@ -1,0 +1,28 @@
+Make sure models work and seed all data ✅
+Create a check for a valid session token as middleware ✅
+All models should inherit create, update, delete from the Base model ✅
+Refactor SessionController to use new Base query ✅
+
+Create validation check for uniqueness: ✅
+- make sure new users can't take an already existing username ✅
+- users cannot create multiple posts with the same name ✅
+
+create controllers:
+- Users:
+  • 
+- Posts:
+  • creating a post:
+    - name_for_hash = filename + user.id
+    - hashed_name = hash(name_for_hash)
+    - check to see if the s3 bucket already contains the hashed_name
+    - upload the image to s3 under hashed_name and upon completion get the 
+    name of the file and attach it to the Post model to be created
+
+
+Create a tests folder and populate with tests
+
+Create frontend scaffold to test backend functionality:
+- Login
+- Signup
+- Create post
+  • check backend functionality for file uploads to s3

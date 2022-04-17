@@ -33,7 +33,7 @@ class S3MixIn(object):
             except boto3.exceptions.ClientError as e:
                 return e
 
-    def create_object(self, data, filename):
+    def create_object(self, data):
         # controller will be responsible for getting data from the request
         # and passing it in
         with S3MixIn.s3_client as s3, S3MixIn._s3_bucket_ as bucket:
