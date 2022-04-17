@@ -1,10 +1,13 @@
-from distutils.log import error
-from marshmallow import ValidationError
 import pytest
 from faker import Faker
-from db.models import User
+from controllers.validators import UserSchema
 
 fake = Faker()
+
+
+@pytest.fixture()
+def schema():
+    return UserSchema()
 
 
 def test_valid_user_validation(schema):
@@ -40,16 +43,17 @@ def test_unique_usernames(schema):
     }
     errors = schema.validate(user_dict)
     # print(f"ERROR: {errors}")
-    assert "Username already exists" in errors.get('username') 
+    assert "Username already exists" in errors.get('username')
+
 
 def test_unique_emails(schema):
-  user_dict = {
-      "username": "Kevin1",
-      "email": "kevinyunas@icloud.com",
-      "password": "password",
-      "location": fake.city(),
-      "bio": fake.paragraph(nb_sentences=5),
-      "avatar_s3_object_id": fake.domain_name(4),
-  }
-  errors = schema.validate(user_dict)
-  assert "Account already registered with email" in errors.get('email')
+    user_dict = {
+        "username": "Kevin1",
+        "email": "kevinyunas@icloud.com",
+        "password": "password",
+        "location": fake.city(),
+        "bio": fake.paragraph(nb_sentences=5),
+        "avatar_s3_object_id": fake.domain_name(4),
+    }
+    errors = schema.validate(user_dict)
+    assert "Account already registered with email" in errors.get('email')
