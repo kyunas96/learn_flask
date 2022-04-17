@@ -26,3 +26,9 @@ Create frontend scaffold to test backend functionality:
 - Signup
 - Create post
   • check backend functionality for file uploads to s3
+
+For testing purposes, there should be a test configuration of the app that utilizes
+a test database created with sqlite
+
+4/17:
+Transition user_routes_show to use query string parameters

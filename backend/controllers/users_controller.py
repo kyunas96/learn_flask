@@ -2,7 +2,7 @@ from db.models import User, Post
 from .base_controller import BaseController
 from .validators import UserSchema
 
-user_validator = UserSchema()
+user_validator = UserSchema(exclude=('id', 'session_token'))
 
 
 class UsersController(BaseController):

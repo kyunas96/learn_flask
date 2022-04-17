@@ -16,9 +16,11 @@ class UserSchema(Schema):
     - avatar_s3_object_id (str)
     """
 
+    id = fields.Int()
     username = fields.Str(required=True, validate=Length(min=4))
     email = fields.Email(required=True)
     password = fields.Str(required=True, validate=Length(min=8, max=32))
+    session_token = fields.Str()
     location = fields.Str()
     bio = fields.Str(validate=Length(max=256))
     avatar_s3_object_id = fields.Str(validate=Length(min=32, max=1024))

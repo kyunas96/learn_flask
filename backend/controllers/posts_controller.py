@@ -1,10 +1,23 @@
 from .import BaseController
-from db.models import Post, Follow
-from sqlalchemy.orm import Query
+from db.models import Post
 from .validators import PostSchema
 
 
 class PostsController(BaseController):
+
+    def index(pagenumber):
+        FEED_LIMIT = 25
+        followings = [user.id for user in BaseController._current_user_. \
+            following]
+        print(f"FOLLOWINGS: {followings}")
+
+        posts = Post.query().filter(Post.user_id.in_(followings)). \
+            order_by(Post.created_at.desc()). \
+            offset(pagenumber). \
+            limit(FEED_LIMIT). \
+            all()
+        return posts
+                
 
     def create(post_dict):
         post_dict['user_id'] = BaseController._current_user_.id

@@ -14,3 +14,12 @@ def app():
 @pytest.fixture()
 def client(app):
   yield app.test_client()
+
+
+@pytest.fixture()
+def logged_in_client(client):
+  client.post('session/login', data={
+    "username": "Kevin",
+    "password": "password"
+  })
+  yield client

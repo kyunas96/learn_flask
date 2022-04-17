@@ -1,25 +1,26 @@
+from email.policy import default
 import json
 from flask import Blueprint, request, jsonify
 from controllers import PostsController
+from controllers.validators import PostSchema
 
 
 posts_route = Blueprint('posts_route', __name__)
 
 
-# @posts_route.get('/<int:pagenum>')
-# def index(pagenum):
-#     limit = 25
-#     offset = (pagenum - 1) * limit
-#     posts = PostsController.index(offset, limit)
-    
-#     return jsonify(posts), 200
+@posts_route.get('/feed/', defaults={'pagenumber': 1})
+@posts_route.get('/feed/<int:pagenumber>')
+def feed(pagenumber):
+    posts = PostsController.index(pagenumber)
+    serializer = PostSchema(many=True)
+    return serializer.dumps(posts), 200
 
 
-@posts_route.get('/<id>')
+@posts_route.get('/<int:id>')
 def show(id):
     post = PostsController.show(id)
     if not post:
-        return jsonify({'error': "Post not found"}), 400
+        return jsonify({'error': "Post not found"}), 404
     return post.to_json(), 200
 
 
@@ -33,11 +34,11 @@ def post():
         return jsonify({'error': str(e)}), 400
 
 
-@posts_route.patch('<postid>')
-def update(postid):
+@posts_route.patch('<int:id>')
+def update(id):
     try:
         post_dict = request.form.to_dict()
-        post = PostsController.update(postid, post_dict)
+        post = PostsController.update(id, post_dict)
         return post.to_json(), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 400

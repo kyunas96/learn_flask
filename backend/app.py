@@ -5,7 +5,7 @@ import db.models as models
 from db import get_db_engine
 from sqlalchemy import *
 from routes import (session_route, posts_route,
-                     users_route, user_show_route, follows_route, feed_route)
+                    users_route, follows_route, feed_route)
 from controllers import BaseController
 from flask_cors import CORS
 
@@ -22,7 +22,6 @@ def create_app():
     app.register_blueprint(session_route, url_prefix='/session')
     app.register_blueprint(feed_route, url_prefix='/feed')
     app.register_blueprint(posts_route, url_prefix='/posts')
-    users_route.register_blueprint(user_show_route, url_prefix='<int:userid>')
     app.register_blueprint(users_route, url_prefix='/users')
     app.register_blueprint(follows_route, url_prefix='/follows')
 
@@ -35,9 +34,6 @@ def create_app():
     return app
 
 # get the current user before further processing
-
-
-
 
 
 if __name__ == "__main__":
