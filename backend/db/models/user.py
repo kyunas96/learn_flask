@@ -1,7 +1,7 @@
 from .base import Base
 from .like import Like
 from .follow import Follow
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, null
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import relationship
 from .utils.user import create_session_token
@@ -18,8 +18,6 @@ class User(Base):
                       unique=True,
                       index=True)
 
-    avatar_s3_object_id = Column(
-        'avatar_s3_object_id', String(), nullable=True)
     email = Column('email', String(64), nullable=False, unique=True)
     password = Column('password', String(), nullable=False)
     session_token = Column('session_token',
@@ -27,6 +25,8 @@ class User(Base):
                            index=True,
                            unique=True,
                            nullable=False)
+    avatar_s3_object_id = Column(
+        'avatar_s3_object_id', String(), nullable=True)
     location = Column('location', String(128), nullable=True)
     bio = Column('bio', String(256), nullable=True)
     date_created = Column('date_created', DateTime, nullable=False)
@@ -68,8 +68,11 @@ class User(Base):
         self.username = user_dict['username']
         self.email = user_dict['email']
         self.password = User.create_password(user_dict['password'])
-        self.date_created = datetime.datetime.utcnow()
         self.session_token = create_session_token()
+        self.avatar_s3_object_id = user_dict.get('avatar_s3_object_id', None)
+        self.location = user_dict.get('location', None)
+        self.bio = user_dict.get('bio', None)
+        self.date_created = datetime.datetime.utcnow()
 
 
     def verify_password(self, password):

@@ -14,8 +14,8 @@ class SessionController(BaseController):
         errors = session_validator.validate(session_dict)
         if errors:
             raise Exception(errors)
-        username = session_dict.pop('username')
-        password = session_dict.pop('password')
+        username = session_dict['username']
+        password = session_dict['password']
         user = User.query().filter(User.username == username).scalar()
         if not user: raise Exception("User does not exist")
         if not user.verify_password(password): 

@@ -21,6 +21,7 @@ def test_invalid_session_login(client):
       "password": "incorrect"
   })
   assert res.status_code == 400
+  
 
 def test_valid_session_logout(client):
   res = client.post('/session/login', data={
