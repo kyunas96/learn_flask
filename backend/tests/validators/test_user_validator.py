@@ -42,7 +42,6 @@ def test_unique_usernames(schema):
         "avatar_s3_object_id": fake.domain_name(4),
     }
     errors = schema.validate(user_dict)
-    # print(f"ERROR: {errors}")
     assert "Username already exists" in errors.get('username')
 
 

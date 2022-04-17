@@ -68,10 +68,10 @@ class User(Base):
         self.username = user_dict['username']
         self.email = user_dict['email']
         self.password = User.create_password(user_dict['password'])
-        self.session_token = create_session_token()
         self.avatar_s3_object_id = user_dict.get('avatar_s3_object_id', None)
         self.location = user_dict.get('location', None)
         self.bio = user_dict.get('bio', None)
+        self.session_token = create_session_token()
         self.date_created = datetime.datetime.utcnow()
 
 
